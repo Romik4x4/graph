@@ -5,6 +5,7 @@
 #include <QScreen>
 #include <QMessageBox>
 #include <QMetaEnum>
+#include "qcustomplot.h"
 
 MainWindow::MainWindow(QWidget *parent) :
   QMainWindow(parent),
@@ -12,7 +13,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
   ui->setupUi(this);
 
- // setGeometry(400, 250, 542, 390);
+  setGeometry(400, 250, 542, 390);
   
   setupDemo(0);
 
@@ -37,11 +38,13 @@ void MainWindow::setupQuadraticDemo(QCustomPlot *customPlot)
 {
   demoName = "Quadratic Demo";
   // generate some data:
+
   QVector<double> x(101), y(101); // initialize with entries 0..100
+
   for (int i=0; i<101; ++i)
   {
-    x[i] = i/1 - 1; // x goes from -1 to 1
-    y[i] = x[i]*x[i];  // let's plot a quadratic function
+    x[i] = i; // x goes from -1 to 1
+    y[i] = i;  // let's plot a quadratic function
   }
   // create graph and assign data to it:
   customPlot->addGraph();
@@ -66,15 +69,15 @@ void MainWindow::setupQuadraticDemo(QCustomPlot *customPlot)
 void MainWindow::realtimeDataSlot()
 {
   // calculate two new data points:
-#if QT_VERSION < QT_VERSION_CHECK(4, 7, 0)
-  double key = 0;
-#else
+
   double key = QDateTime::currentDateTime().toMSecsSinceEpoch()/1000.0;
-#endif
+
   static double lastPointKey = 0;
+
   if (key-lastPointKey > 0.1) // at most add point every 10 ms
   {
-    double value0 = qSin(key); //qSin(key*1.6+qCos(key*1.7)*2)*10 + qSin(key*1.2+0.56)*20 + 26;
+
+    double value0 = qCos(key);  //qSin(key*1.6+qCos(key*1.7)*2)*10 + qSin(key*1.2+0.56)*20 + 26;
 
     // add data to lines:
     ui->customPlot->graph(0)->addData(key, value0);
