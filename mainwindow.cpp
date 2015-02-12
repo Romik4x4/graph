@@ -54,7 +54,7 @@ void MainWindow::realtimeDataSlot()
 
     double key = QDateTime::currentDateTime().toMSecsSinceEpoch()/1000.0;
 
-    // static double lastPointKey = 0;
+    static double lastPointKey = 0;
 
   // if (key-lastPointKey > 0.01) // at most add point every 10 ms
   //  {
